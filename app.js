@@ -16,6 +16,7 @@ var db = mongoose.connection;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var blogs = require('./routes/blogs');
 
 // Init App
 var app = express();
@@ -62,7 +63,8 @@ app.use(expressValidator({
   }
 }));
 
-// Connect Flash
+
+// Connect Flash //
 app.use(flash());
 
 // Global Vars
@@ -78,23 +80,11 @@ app.use(function (req, res, next) {
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/blogs', blogs);
 
 // Set Port
 app.set('port', (process.env.PORT || 3000));
 
 app.listen(app.get('port'), function(){
-	console.log('Server started on port '+app.get('port'));
+  console.log('Server started on port '+app.get('port'));
 });
-© 2018 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-Press h to open a hovercard with more details.
