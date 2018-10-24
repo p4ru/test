@@ -7,16 +7,14 @@ var Blog = require('../models/blog');
 
 
 
-// show all Blogs
+//create http  url /blogs/blogs without any prams function  show all Blogs
 router.get('/blogs', ensureAuthenticated, function (req, res) {
 	console.log('show all blogs...')
-
-     //blog.getAllBlogs( function(err, blogs){
 
         Blog.getAllBlogs( function (err, blogCollections) {
         if (err) throw err;	
         console.log("# of Blog="+blogCollections.length);
-
+        //all blogs render to /blogs 
         res.render('blogs',
            {
         	 blogs:blogCollections
@@ -30,15 +28,17 @@ router.get('/blogs', ensureAuthenticated, function (req, res) {
  });
 
 
-// New Blog
+//get one  Blog  but not use 
 router.get('/blog', ensureAuthenticated, function (req, res) {
 	res.render('blog');
 });
 
-// Exiting Blog
+//http url with prams /blogs/blogs/blogid get blog by blogid 
 router.get('/blog/:id', ensureAuthenticated, function (req, res) {
 	console.log("Getting blog by id");
 	blogId = req.params.id;
+	name= req.params.name;
+	console.log("nam="+name);
 	console.log("blogId="+blogId);
 
 	Blog.getBlogById(blogId, function (err, blog) {
@@ -53,12 +53,32 @@ router.get('/blog/:id', ensureAuthenticated, function (req, res) {
 				  );
 
 		});
-
 	//res.render('blog');
+});
+
+
+router.post('/search', function (req, res) { 
+    var search= req.body.searchtext;
+
+
+	Blog.getBlogByTitle(search, function (err, searchresultblogs) {
+		   if (err) throw err;
+		   console.log("Blog from DB after search...");
+		   console.log(searchresultblogs);
+		   res.render('blogs',
+					{
+						blogs:searchresultblogs,
+						comment:"h1"
+					}
+				  );
+
+		});
+
 
 });
 
-// Add Blog
+
+// Add Blog 
 router.post('/blog', function (req, res) { // /blogs/blog
 	var title = req.body.title;
 	var body = req.body.body;
@@ -67,7 +87,7 @@ router.post('/blog', function (req, res) { // /blogs/blog
 	var loggedInUser = req.user;
 	console.log("logged in user is->" + loggedInUser)	
 
-	// Validation
+	// Validation blog title and body
 	req.checkBody('title', 'Title is required').notEmpty();
 	req.checkBody('body', 'Body is required').notEmpty();
 
@@ -111,7 +131,7 @@ router.post('/blog', function (req, res) { // /blogs/blog
 	}
 });
 
-
+//http rout /blog/ write comment on any blog you have to seen
 router.post('/comment', function (req, res) {
 	var id = req.body.id;
 	var comment = req.body.comment;

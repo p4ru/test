@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 
-//Comment
+//Comment schema with 3row comment,commentby and comment date
 var CommentSchema = mongoose.Schema({
 	comment: {
 		type: String,
@@ -17,7 +17,7 @@ var CommentSchema = mongoose.Schema({
 	}		
 });
 
-// Blog Schema
+// Blog Schema with 4row title,body,blogby,createdate
 var BlogSchema = mongoose.Schema({
 	title: {
 		type: String,
@@ -38,30 +38,34 @@ var BlogSchema = mongoose.Schema({
 
 });
 
-var Blog = module.exports = mongoose.model('Blog', BlogSchema);
 
+
+var Blog = module.exports = mongoose.model('Blog', BlogSchema);
+//functions to create/write blog
 module.exports.createBlog = function(newBlog, callback){
 	        newBlog.save(callback);
 	};
 
+
+
+// get blog by title
 module.exports.getBlogByTitle = function(title, callback){
 	var query = {title: title};
-	Blog.findOne(query, callback);
+	Blog.find(query, callback);
 }
 
-
-
+//functions to get  blog by id
 module.exports.getBlogById = function(idVar, callback){
 	Blog.findById (idVar, callback);
 }
 
-
+//functions to get all blog
 module.exports.getAllBlogs = function( callback){
 	Blog.find( callback);
 }
 
 
-
+  //add blo comment by comment id login user
 module.exports.addBlogCommentById = function(id, comment, loggedInUser, callback){
 
 	Blog.findById(id , function (err, blog) {
@@ -73,7 +77,7 @@ module.exports.addBlogCommentById = function(id, comment, loggedInUser, callback
 
 				var commentUserNmae = loggedInUser.name;
 
-
+         // inside blog post comment with commentby, or comment date 
 				blog.comments.push({comment:comment, commentby: commentUserNmae, commentdate : createDate});
 				
 				console.log('????');

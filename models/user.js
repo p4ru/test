@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
-// User Schema
+// User Schema varables
 var UserSchema = mongoose.Schema({
 	username: {
 		type: String,
@@ -19,7 +19,7 @@ var UserSchema = mongoose.Schema({
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);
-
+//// user functions and bcrypt for hashing users password in your DB
 module.exports.createUser = function(newUser, callback){
 	bcrypt.genSalt(10, function(err, salt) {
 	    bcrypt.hash(newUser.password, salt, function(err, hash) {
@@ -28,16 +28,16 @@ module.exports.createUser = function(newUser, callback){
 	    });
 	});
 }
-
+//functions to get user by user name
 module.exports.getUserByUsername = function(username, callback){
 	var query = {username: username};
 	User.findOne(query, callback);
 }
-
+//functions to get user by id
 module.exports.getUserById = function(id, callback){
 	User.findById(id, callback);
 }
-
+//functions to comparePassword 
 module.exports.comparePassword = function(candidatePassword, hash, callback){
 	bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
     	if(err) throw err;

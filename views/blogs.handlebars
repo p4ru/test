@@ -1,0 +1,27 @@
+ <div class="jumbotron jumbotron-fluid">
+  <div class="container">
+ {{#each blogs as |blog|}}
+   <div class="row">
+      <div class="col-xs-6 col-md-3">
+      <a class="btn btn-primary" href="/blogs/blog/{{id}}" aria-expanded="false">{{title}}</a>
+  </div>
+ 
+   <div class="col-xs-6 col-md-3">
+      <a class="btn btn-primary" href="/blogs/blog/{{id}}" aria-expanded-"false">{{blogby}}</a>
+    </div>
+
+        <div class="col-xs-6 col-md-3">
+          <a class="btn btn-primary" href="/blogs/blog/{{id}}" aria-expanded="false">{{createdate}}</a>
+         </div>
+       </div>
+          {{/each}}
+           <nav aria-label="...">
+           <ul class="nav nav-pills pull-right">  
+           <ul class="pager">
+           <li><a href="#">Previous</a></li>
+           <li><a href="#">Next</a></li>
+         </ul>
+       </nav> 
+</div>
+</div>
+
